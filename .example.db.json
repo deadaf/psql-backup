@@ -1,0 +1,11 @@
+{
+  "dbA": {
+    "host": "",
+    "password": ""
+  },
+
+  "dbB": {
+    "host": "",
+    "password": ""
+  }
+}

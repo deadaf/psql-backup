@@ -51,7 +51,7 @@ async def main():
     await create_psql_dump(pro_db, filename)
     await upload_to_mega(filename + ".gz")
 
-    await send_discord_webhook("Quotient")
+    await send_discord_webhook("Quotient Pro")
 
 
 if __name__ == "__main__":

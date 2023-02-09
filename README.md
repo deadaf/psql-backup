@@ -1,1 +1,1 @@
-# psql_backup
+# psql-backup

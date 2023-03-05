@@ -5,6 +5,7 @@ from datetime import datetime
 import gzip
 import os
 import aiohttp
+import json
 
 
 async def upload_to_mega(filename):
@@ -15,8 +16,6 @@ async def upload_to_mega(filename):
 
 
 async def create_psql_dump(db: str, filename: str):
-    # Restore using: pg_restore -h localhost -U postgres -d testdb -1 file_name.dump
-
     os.system("pg_dump --file={} --format=custom --dbname={}".format(filename, db))
 
     compressed_file = "{}.gz".format(str(filename))
@@ -39,19 +38,15 @@ async def send_discord_webhook(project: str):
 
 
 async def main():
-    quotient_db = config("QUOTIENT")
-    filename = "quotient_{}.dump".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
-    await create_psql_dump(quotient_db, filename)
-    await upload_to_mega(filename + ".gz")
+    with open("db.json", "r") as f:
+        databases = json.load(f)
 
-    await send_discord_webhook("Quotient")
+        for db in databases.values():
+            filename = "{}_{}.dump".format(db["name"], datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+            await create_psql_dump(db["url"], filename)
+            await upload_to_mega(filename + ".gz")
 
-    pro_db = config("QUOTIENTPRO")
-    filename = "quotientpro_{}.dump".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
-    await create_psql_dump(pro_db, filename)
-    await upload_to_mega(filename + ".gz")
-
-    await send_discord_webhook("Quotient Pro")
+            await send_discord_webhook(db["name"])
 
 
 if __name__ == "__main__":

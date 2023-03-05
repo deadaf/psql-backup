@@ -70,7 +70,7 @@ async def main() -> None:
             await create_psql_dump(db["url"], filename)
             await upload_to_mega(filename + ".gz")
 
-            await send_discord_webhook(db["name"])
+            await send_discord_webhook(db["name"])  # this is optional, I do it to know my program is working.
 
 
 if __name__ == "__main__":

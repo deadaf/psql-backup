@@ -62,7 +62,7 @@ async def send_discord_webhook(project: str) -> None:
 
 
 async def main() -> None:
-    with open("db.json", "r") as f:
+    with open("psql-backup/db.json", "r") as f:
         databases = json.load(f)
 
         for db in databases.values():  # type: dict

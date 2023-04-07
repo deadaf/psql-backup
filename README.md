@@ -12,6 +12,8 @@ This is a simple Python application that creates a backup of a PostgreSQL databa
 
 ## Setting up cron job
 
+> Note that this step is optional. You can run the script manually or use a different scheduler. This is just an example of how to set up using cron. I personally use Github Workflows to run the script every day at midnight. You can find the workflow file [here](.github/workflows/backup.yml).
+
 - Open the crontab editor: `crontab -e`
 - Add the following line to run the script every day at midnight: `0 0 * * * /path/to/python /path/to/postgresql-backup/main.py`
 

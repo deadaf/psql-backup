@@ -6,8 +6,7 @@ This is a simple Python application that creates a backup of a PostgreSQL databa
 
 - Clone this repository using `git clone https://github.com/deadaf/psql-backup.git`
 - Install the required packages using `pip install -r requirements.txt` or use `poetry install`.
-- Rename `example.db.json` to `db.json` and fill in the database details.
-- Rename `.example.env` to `.env` and fill in the MEGA.nz credentials.
+- Rename `.example.env` to `.env` and fill in the `PostgreSQL` & `MEGA.nz` credentials.
 - Run the script: `python3 main.py`
 
 ## Setting up cron job

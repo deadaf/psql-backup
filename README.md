@@ -2,6 +2,8 @@
 
 This is a simple Python application that creates a backup of a PostgreSQL database, compresses it using gzip, and uploads it to MEGA.nz. The application reads the database details from a db.json file that includes the database name and URL. It uses the pg_dump and gzip utilities to create and compress the backup file, respectively.
 
+![image](https://user-images.githubusercontent.com/72350242/235348633-9616607e-a604-45d0-8d09-25cb900b5d10.png)
+
 ## Installation & Usage
 
 - Clone this repository using `git clone https://github.com/deadaf/psql-backup.git`

@@ -5,7 +5,7 @@ from datetime import datetime
 import gzip
 import os
 import aiohttp
-import json
+import asyncpg
 
 
 async def upload_to_mega(filename) -> None:
@@ -62,15 +62,24 @@ async def send_discord_webhook(project: str) -> None:
 
 
 async def main() -> None:
-    with open("psql-backup/db.json", "r") as f:
-        databases = json.load(f)
+    async with asyncpg.create_pool(
+        host=config("DB_HOST"), port=config("DB_PORT"), user=config("DB_USER"), password=config("DB_PASSWORD")
+    ) as conn:
+        databases = await conn.fetch(
+            "SELECT datname FROM pg_database WHERE datistemplate = false AND datname != 'postgres';"
+        )
 
-        for db in databases.values():  # type: dict
-            filename = "{}_{}.dump".format(db["name"], datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
-            await create_psql_dump(db["url"], filename)
+        for db in databases:  # type: dict
+            db_name = db["datname"]
+            db_url = "postgresql://{}:{}@{}:{}/{}".format(
+                config("DB_USER"), config("DB_PASSWORD"), config("DB_HOST"), config("DB_PORT"), db_name
+            )
+
+            filename = "{}_{}.dump".format(db_name, datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+            await create_psql_dump(db_url, filename)
             await upload_to_mega(filename + ".gz")
 
-            await send_discord_webhook(db["name"])  # this is optional, I do it to know my program is working.
+            await send_discord_webhook(db_name)  # this is optional, I do it to know my program is working.
 
 
 if __name__ == "__main__":

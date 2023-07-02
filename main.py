@@ -71,6 +71,10 @@ async def main() -> None:
 
         for db in databases:  # type: dict
             db_name = db["datname"]
+            
+            if "test" in db_name:
+                continue # ignore test instances.
+                
             db_url = "postgresql://{}:{}@{}:{}/{}".format(
                 config("DB_USER"), config("DB_PASSWORD"), config("DB_HOST"), config("DB_PORT"), db_name
             )

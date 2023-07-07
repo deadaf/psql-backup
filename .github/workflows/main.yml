@@ -3,7 +3,7 @@ name: Create Backups
 on:
   # Triggers the workflow on schedule
   schedule:
-    - cron: "0 0 * * *" # At 00:00 on every day-of-month from 1 through 31.
+    - cron: "0 0 * * 0" # At 00:00 UTC on every sunday.
   # Run this workflow manually.
   workflow_dispatch:
 
